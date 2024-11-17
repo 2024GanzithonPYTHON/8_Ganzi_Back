@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 임시 구현</title>
+</head>
+<body>
+<h1>로그인 (임시)</h1>
+<form action="/login" method="post">
+    <label for="userId"></label>
+    <input type="text" id="userId" name="userId" placeholder="아이디" required><br><br>
+    <label for="userPwd"></label>
+    <input type="password" id="userPwd" name="userPwd" placeholder="비밀번호" required><br><br>
+    <input type="submit" value="Login">
+</form>
+<div th:if="${loginError}" style="color: red;">
+    <p th:text="${loginError}"></p>
+</div>
+<br>
+<a href="/register">회원가입</a>
+</body>
+</html>

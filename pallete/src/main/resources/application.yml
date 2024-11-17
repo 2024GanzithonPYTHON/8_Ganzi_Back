@@ -18,3 +18,4 @@ spring:
       hibernate:
         format_sql: false
         use_sql_comments: true
+

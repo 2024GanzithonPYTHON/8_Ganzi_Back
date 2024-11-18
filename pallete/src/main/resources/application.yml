@@ -10,7 +10,7 @@ spring:
 
   jpa:
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -18,4 +18,3 @@ spring:
       hibernate:
         format_sql: false
         use_sql_comments: true
-

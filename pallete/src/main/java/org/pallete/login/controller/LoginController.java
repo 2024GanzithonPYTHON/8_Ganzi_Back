@@ -59,8 +59,4 @@ public class LoginController {
         return "register";
     }
 
-    @GetMapping("/findInfo")
-    public String showFindInfoPage() {
-        return "findInfo";
-    }
 }

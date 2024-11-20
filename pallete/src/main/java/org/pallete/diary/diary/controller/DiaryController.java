@@ -49,10 +49,9 @@ public class DiaryController {
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DiaryResponseDto>> createPost(
-                                                                 @Validated DiaryRequestDto diaryRequestDto,
-                                                                 @RequestParam(value = "diaryImage", required=false) MultipartFile diaryImage,
-                                                                 HttpServletRequest request) throws IOException {
-
+            @Validated DiaryRequestDto diaryRequestDto,
+            @RequestParam(value = "diaryImage", required=false) MultipartFile diaryImage,
+            HttpServletRequest request) throws IOException {
         DiaryResponseDto diaryResponseDto = diaryService.createDiary(diaryRequestDto, diaryImage, request);
         return ResponseEntity.ok(Response.ok(diaryResponseDto));
     }

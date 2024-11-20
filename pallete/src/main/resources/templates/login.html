@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 임시 구현</title>
+</head>
+<body>
+<h1>로그인 (임시)</h1>
+<form action="/login" method="post">
+    <input type="email" name="email" required />
+    <input type="password" name="password" required />
+    <button type="submit">Login</button>
+</form>
+<div th:if="${loginError}" style="color: red;">
+    <p th:text="${loginError}"></p>
+</div>
+<br>
+<a href="/register">회원가입</a>
+</body>
+</html>

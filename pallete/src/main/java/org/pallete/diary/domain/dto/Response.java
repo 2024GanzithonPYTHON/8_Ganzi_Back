@@ -1,4 +1,4 @@
-package org.pallete.domain.dto;
+package org.pallete.diary.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;

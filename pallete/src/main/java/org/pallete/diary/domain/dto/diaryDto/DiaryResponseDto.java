@@ -1,10 +1,10 @@
-package org.pallete.domain.dto.diaryDto;
+package org.pallete.diary.domain.dto.diaryDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.pallete.domain.Diary;
+import org.pallete.diary.domain.Diary;
 
 import java.time.LocalDate;
 
@@ -16,23 +16,24 @@ public class DiaryResponseDto {
     private Long id;
     private String content;
     private LocalDate createdAt;
-    private int point;
-    private String review;
+    private String diaryImage;
 
     public DiaryResponseDto(Diary diary) {
         this.id = diary.getId();
         this.title = diary.getTitle();
         this.content = diary.getContent();
         this.createdAt = diary.getCreatedAt();
+        this.diaryImage = diary.getDiaryImage();
     }
 
 
     public DiaryResponseDto(String title,
                             String content,
-                            LocalDate createdAt) {
+                            LocalDate createdAt, String diaryImage) {
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
+        this.diaryImage = diaryImage;
     }
 
     public DiaryResponseDto(Diary diary,
@@ -41,8 +42,6 @@ public class DiaryResponseDto {
         this.title = diary.getTitle();
         this.content = diary.getContent();
         this.createdAt = date;
-        this.point = diary.getScore().getPoint();
-        this.review = diary.getScore().getReview();
     }
 
 }

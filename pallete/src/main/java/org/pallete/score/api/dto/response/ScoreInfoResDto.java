@@ -7,13 +7,14 @@ import java.time.LocalDateTime;
 
 @Builder
 public record ScoreInfoResDto(
-        Long diaryId,
+        Long id,
         int score,
         String review,
         LocalDateTime createDate
 ) {
     public static ScoreInfoResDto from(Score score) {
         return ScoreInfoResDto.builder()
+                .id(score.getId())
                 .score(score.getScore())
                 .review(score.getReview())
                 .createDate(score.getCreateDate())

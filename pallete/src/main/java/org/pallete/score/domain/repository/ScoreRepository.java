@@ -1,10 +1,12 @@
 package org.pallete.score.domain.repository;
 
 
+import org.pallete.diary.domain.Diary;
 import org.pallete.score.domain.Score;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +15,13 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
 
     List<Score> findById(Score score);
 
-    Optional<List<Score>> findByUserEmail(String email);
+    List<Score> findAllByUserEmail(String email);
 
     List<Score> findAllByUserId(Long id);
 
-    Optional<Score> findByUserIdAndDiaryId(Long userId, Long diaryId);
+    Optional<Score> findByUserEmailAndDiaryId(String email, Long diaryId);
+    Score findByDiary(Diary diary);
+
+    Optional<Score> findTopByUserEmailAndCreatedAt(String userEmail, LocalDate createdAt);
+
 }

@@ -1,7 +1,7 @@
 package org.pallete.score.api.dto.request;
 
 import org.pallete.diary.domain.Diary;
-import org.pallete.diary.domain.User;
+import org.pallete.login.model.User;
 import org.pallete.score.domain.Score;
 
 public record ScoreSaveReqDto(

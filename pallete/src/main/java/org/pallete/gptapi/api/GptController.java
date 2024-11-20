@@ -1,5 +1,6 @@
 package org.pallete.gptapi.api;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pallete.gptapi.api.dto.GptResDto;
@@ -20,8 +21,8 @@ public class GptController {
     private final GptService gptService;
 
     @PostMapping("/message")
-    public ResponseEntity<GptResDto> compareDiaries(Principal principal) {
-        GptResDto comparisonResult = gptService.compareDiary(principal);
+    public ResponseEntity<GptResDto> compareDiaries(HttpServletRequest request) {
+        GptResDto comparisonResult = gptService.compareDiary(request);
         return ResponseEntity.ok(comparisonResult);
     }
 }

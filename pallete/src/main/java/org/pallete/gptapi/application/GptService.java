@@ -1,6 +1,8 @@
 package org.pallete.gptapi.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pallete.diary.domain.Diary;
@@ -30,22 +32,15 @@ public class GptService {
     private final String model;
     private final ObjectMapper objectMapper;
 
-    public GptResDto compareDiary(Principal principal) {
-        Long userId = Long.parseLong(principal.getName());
+    public GptResDto compareDiary(HttpServletRequest request) {
+        String userEmail = getEmailFromSession(request);
 
         LocalDate today = LocalDate.now();
         LocalDate yesterday = today.minusDays(1);
 
-        // LocalDate를 LocalDateTime으로 변환
-        LocalDateTime startOfDay = today.atStartOfDay();
-        LocalDateTime endOfDay = today.atTime(23, 59, 59);
-
-        LocalDateTime yesterdayStartOfDay = yesterday.atStartOfDay();
-        LocalDateTime yesterdayEndOfDay = yesterday.atTime(23, 59, 59);
-
         // 오늘과 어제의 일기 조회
-        List<Diary> todayDiaries = diaryRepository.findByUserIdAndCreatedAtBetween(userId, startOfDay, endOfDay);
-        List<Diary> yesterdayDiaries = diaryRepository.findByUserIdAndCreatedAtBetween(userId, yesterdayStartOfDay, yesterdayEndOfDay);
+        List<Diary> todayDiaries = diaryRepository.findByUserEmailAndCreatedAt(userEmail, today);
+        List<Diary> yesterdayDiaries = diaryRepository.findByUserEmailAndCreatedAt(userEmail, yesterday);
 
         if (todayDiaries.isEmpty() || yesterdayDiaries.isEmpty()) {
             throw new IllegalArgumentException("어제 또는 오늘의 일기가 없습니다.");
@@ -81,5 +76,15 @@ public class GptService {
         } catch (Exception e) {
             log.error("Failed to parse GPT response", e);
             throw new RuntimeException("GPT 응답을 처리하는 중 오류가 발생했습니다.", e);
-        }    }
+        }
+    }
+
+    // 세션에서 이메일 가져오기
+    private String getEmailFromSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userEmail") == null) {
+            throw new IllegalStateException("로그인 상태가 아닙니다.");
+        }
+        return (String) session.getAttribute("userEmail");
+    }
 }

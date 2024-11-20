@@ -49,5 +49,6 @@ public class UserRestController {
         } else {
             return ResponseEntity.status(401).body("Not logged in");
         }
+        
     }
 }

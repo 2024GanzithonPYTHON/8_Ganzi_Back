@@ -1,6 +1,7 @@
 package org.pallete.login.controller;
 
 import org.pallete.login.model.User;
+import org.pallete.login.model.UserSignUpReqDto;
 import org.pallete.login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,15 @@ public class UserRestController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        if (userService.findByEmail(user.getEmail()) != null) {
+    public ResponseEntity<String> register(@RequestBody UserSignUpReqDto userSignUpReqDto) {
+        if (userService.findByEmail(userSignUpReqDto.email()) != null) {
             return ResponseEntity.badRequest().body("Email already exists");
         }
+        User user = new User();
+        user.setEmail(userSignUpReqDto.email());
+        user.setName(userSignUpReqDto.name());
+        user.setPassword(userSignUpReqDto.password());
+
         userService.saveUser(user);
         return ResponseEntity.ok("Registration successful");
     }
@@ -28,7 +34,7 @@ public class UserRestController {
     public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
         User user = userService.findByEmail(email);
         if (user != null && user.getPassword().equals(password)) {
-            session.setAttribute("userName", user.getName());
+            session.setAttribute("userEmail", user.getEmail());
             return ResponseEntity.ok("Login successful");
         } else {
             return ResponseEntity.status(401).body("Invalid email or password");

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.pallete.diary.domain.dto.diaryDto.DiaryRequestDto;
+import org.pallete.login.model.User;
 import org.pallete.score.domain.Score;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Diary {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "diary_id")
     private Long id;
 
@@ -46,7 +47,8 @@ public class Diary {
         this.user = user;
         this.title = diaryRequestDto.getTitle();
         this.content = diaryRequestDto.getContent();
-        this.diaryImage = diaryRequestDto.getDiaryImage();
+        this.diaryImage = diaryImage;
+        this.createdAt = LocalDate.now();
     }
 
     // 인증된 사용자 - 좋아요 개수 증가, 감소

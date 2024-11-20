@@ -26,8 +26,7 @@ public class DiaryResponseDto {
         this.diaryImage = diary.getDiaryImage();
     }
 
-
-    public DiaryResponseDto(String title,
+    public DiaryResponseDto(Long id, String title,
                             String content,
                             LocalDate createdAt, String diaryImage) {
         this.title = title;
@@ -42,6 +41,16 @@ public class DiaryResponseDto {
         this.title = diary.getTitle();
         this.content = diary.getContent();
         this.createdAt = date;
+    }
+
+    public static DiaryResponseDto from(Diary diary) {
+        return new DiaryResponseDto(
+                diary.getTitle(),
+                diary.getId(),
+                diary.getContent(),
+                diary.getCreatedAt(),
+                diary.getDiaryImage()
+        );
     }
 
 }

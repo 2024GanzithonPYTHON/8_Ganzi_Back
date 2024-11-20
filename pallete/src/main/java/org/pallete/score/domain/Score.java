@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.pallete.common.BaseTimeEntity;
 import org.pallete.diary.domain.Diary;
-import org.pallete.diary.domain.User;
+import org.pallete.login.model.User;
 
 @Entity
 @Getter

@@ -22,7 +22,10 @@ public enum ResponseCode {
 
     // like 예외
     ALREADY_LIKE_DIARY(400, "LIKE-002", "이미 좋아요를 누른 일기", HttpStatus.BAD_REQUEST),
-    LIKE_NOT_FOUND(400, "LIKE-003", "좋아요를 찾을 수 없음", HttpStatus.BAD_REQUEST);
+    LIKE_NOT_FOUND(400, "LIKE-003", "좋아요를 찾을 수 없음", HttpStatus.BAD_REQUEST),
+
+    // user notFound 예외
+    USER_NOT_FOUND(400, "USER-001", "사용자를 찾을 수 없음", HttpStatus.BAD_REQUEST);
 
     final Integer status;
     final String code;

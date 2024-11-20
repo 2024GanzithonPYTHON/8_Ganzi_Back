@@ -23,7 +23,7 @@ public class Diary {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private org.pallete.diary.domain.User user;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "score_id")

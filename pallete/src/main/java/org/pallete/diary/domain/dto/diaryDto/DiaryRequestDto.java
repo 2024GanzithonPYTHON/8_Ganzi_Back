@@ -17,6 +17,8 @@ public class DiaryRequestDto {
     @NotNull
     private String content;
 
+    private boolean isVisible;
+
     private String diaryImage;
 
     /**

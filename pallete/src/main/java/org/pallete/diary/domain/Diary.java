@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.pallete.common.BaseTimeEntity;
 import org.pallete.diary.domain.dto.diaryDto.DiaryRequestDto;
-import org.pallete.like.domain.Like;
 import org.pallete.score.domain.Score;
 
 import java.time.LocalDate;

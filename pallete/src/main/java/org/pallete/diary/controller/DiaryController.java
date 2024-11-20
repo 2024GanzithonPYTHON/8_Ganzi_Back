@@ -1,7 +1,6 @@
 package org.pallete.diary.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.pallete.diary.domain.dto.Response;
 import org.pallete.diary.domain.dto.diaryDto.DiaryRequestDto;
@@ -18,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +38,14 @@ public class DiaryController {
                                                                      @PathVariable LocalDate date) {
         return ResponseEntity.ok(Response.ok(diaryService.getDiaryByDate(userId, date)));
     }
+
+    //main에서 랜덤 5개 get
+    @GetMapping()
+    public ResponseEntity<Response<List<DiaryResponseDto>>> getRandomDiaries(){
+        List<DiaryResponseDto> diaries = diaryService.getRandomDiaries();
+        return ResponseEntity.ok(Response.ok(diaries));
+    }
+
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DiaryResponseDto>> createPost(

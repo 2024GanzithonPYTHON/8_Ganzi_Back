@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +37,7 @@ public class DiaryService {
         int page = pageable.getPageNumber() - 1;
         int pageLimit = 10;
         LocalDate today = LocalDate.now();
-        Page<Diary> DiaryPages = diaryRepository.findAllByCreatedAt(today ,
+        Page<Diary> DiaryPages = diaryRepository.findAllByCreatedAtAndIsVisibleTrue(today ,
                 PageRequest.of(page, pageLimit, Sort.Direction.DESC, "id"));
 
         Page<DiaryResponseDto> diaryResponseDto = DiaryPages.map(
@@ -82,6 +84,14 @@ public class DiaryService {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new BusinessException(ResponseCode.DIA_DIA_NOT_FOUND));
         return new DiaryResponseDto(diary);
+    }
+
+    public List<DiaryResponseDto> getRandomDiaries(){
+        LocalDate today = LocalDate.now();
+        return diaryRepository.findRandomDiariesTodayAndIsVisibleTrue(today, PageRequest.of(0, 5))
+                .stream()
+                .map(diary -> new DiaryResponseDto(diary, today))
+                .collect(Collectors.toList());
     }
 
     // 세션에서 이메일 가져오기

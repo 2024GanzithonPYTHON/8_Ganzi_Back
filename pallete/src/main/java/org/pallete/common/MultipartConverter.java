@@ -9,7 +9,8 @@ import java.lang.reflect.Type;
 
 // 스웨거에서도 이미지 업로드 위한 클래스
 @Component
-public class MultipartConverter extends AbstractJackson2HttpMessageConverter {
+public class
+MultipartConverter extends AbstractJackson2HttpMessageConverter {
 
     /**
      * "Content-Type: multipart/form-data" 헤더를 지원하는 HTTP 요청 변환기

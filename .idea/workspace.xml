@@ -63,7 +63,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feature/CRUD,global",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/keh10/myProjects/8_Ganzi_Back/pallete",
+    "last_opened_file_path": "C:/Users/keh10/myProjects/8_Ganzi_Back/pallete/build.gradle",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -110,6 +110,10 @@
       <workItem from="1731995392729" duration="292000" />
       <workItem from="1732088179868" duration="233000" />
       <workItem from="1732088774570" duration="80000" />
+      <workItem from="1732089743037" duration="18000" />
+      <workItem from="1732089770045" duration="7000" />
+      <workItem from="1732089870366" duration="31000" />
+      <workItem from="1732094082665" duration="86000" />
     </task>
     <servers />
   </component>

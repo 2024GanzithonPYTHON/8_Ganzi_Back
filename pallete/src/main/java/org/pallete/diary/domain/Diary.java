@@ -6,10 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.pallete.diary.domain.dto.diaryDto.DiaryRequestDto;
+import org.pallete.like.domain.Like;
 import org.pallete.login.model.User;
 import org.pallete.score.domain.Score;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -28,6 +31,9 @@ public class Diary {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "score_id")
     private Score score;
+
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
     @Column(nullable = false)
     private String title;

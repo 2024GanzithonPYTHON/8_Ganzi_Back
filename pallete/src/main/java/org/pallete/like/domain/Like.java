@@ -15,7 +15,7 @@ public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "like_id", nullable = false)
-    private Long likeId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

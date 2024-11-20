@@ -52,12 +52,12 @@ public class DiaryController {
         return ResponseEntity.ok(Response.ok(diaryService.getDiaryByUserEmail(request)));
     }
 
-    @Operation(summary = "모든 사용자가 랜덤하게 5개의 일기 조회", description = "메인 페이지 상단 레코드 - 모든 사용자가 랜덤하게 5개의 일기를 조회합니다.")
+    @Operation(summary = "모든 사용자가 랜덤하게 오늘의 5개 일기 조회", description = "메인 페이지 상단 레코드 - 모든 사용자가 랜덤하게 오늘의 5개 일기를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
             @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
     })
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<Response<List<DiaryResponseDto>>> getRandomDiaries(){
         List<DiaryResponseDto> diaries = diaryService.getRandomDiaries();
         return ResponseEntity.ok(Response.ok(diaries));

@@ -1,5 +1,8 @@
 package org.pallete.diary.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,28 +31,43 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-
-    // 커뮤니티 - 모든 사용자가 전체 일기 한 페이지에 5개씩 조회(최신순)
+    @Operation(summary = "모든 사용자가 전체 일기 5개씩 조회", description = "커뮤니티 - 모든 사용자가 전체 일기를 한 페이지에 5개씩 최신순으로 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
+    })
     @GetMapping("/community")
     public ResponseEntity<Response<Page<DiaryResponseDto>>> getDiaryList(@PageableDefault(page = 1) Pageable pageable) {
         Page<DiaryResponseDto> diaries = diaryService.getList(pageable);
         return ResponseEntity.ok(Response.ok(diaries));
     }
 
-    // 메인 페이지 - 사용자 개인의 일기 전체 조회(로그인 먼저 해야 볼 수 있음)
+    @Operation(summary = "인증된 사용자가 각자의 일기를 전체 조회", description = "메인 페이지 - 인증된 사용자가 각자의 일기를 전체 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
+    })
     @GetMapping("/user")
     public ResponseEntity<Response<DiaryListResDto>> getDiaryByDate(HttpServletRequest request) {
         return ResponseEntity.ok(Response.ok(diaryService.getDiaryByUserEmail(request)));
     }
 
-    //main에서 랜덤 5개 get
-    @GetMapping()
+    @Operation(summary = "모든 사용자가 랜덤하게 5개의 일기 조회", description = "메인 페이지 상단 레코드 - 모든 사용자가 랜덤하게 5개의 일기를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
+    })
+    @GetMapping
     public ResponseEntity<Response<List<DiaryResponseDto>>> getRandomDiaries(){
         List<DiaryResponseDto> diaries = diaryService.getRandomDiaries();
         return ResponseEntity.ok(Response.ok(diaries));
     }
 
-    // 일기 생성
+    @Operation(summary = "인증된 사용자가 일기 생성", description = "인증된 사용자가 일기를 생성합니다.(제목, 내용, 사진)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
+    })
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Response<DiaryResponseDto>> createPost(
                                                                  @Valid @RequestPart("diary") DiaryRequestDto diaryRequestDto,
@@ -60,20 +78,32 @@ public class DiaryController {
         return ResponseEntity.ok(Response.ok(diaryResponseDto));
     }
 
-    // 다이어리 id에 따른 일기 한 개 조회(모든 사용자 - 커뮤니티에서 해당 일기 누를 떄 팝업으로 해당 일기 한 개 조회)
+    @Operation(summary = "모든 사용자가 일기 id에 따라 해당 일기를 한 개 조회", description = "커뮤니티(팝업) - 모든 사용자가 일기 id에 따라 해당 일기를 한 개 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
+    })
     @GetMapping("/{diaryId}")
     public ResponseEntity<Response<DiaryResponseDto>> getDiary(@PathVariable Long diaryId){
         return ResponseEntity.ok(Response.ok(diaryService.getDiary(diaryId)));
     }
 
-    // 메인 페이지 - 달력 터치시 -> 사용자 개인의 일기 하나 조회(날짜별)
+    @Operation(summary = "인증된 사용자가 날짜별로 각자의 일기 하나 조회", description = "메인 페이지(달력) - 인증된 사용자가 날짜별로 각자의 일기를 한 개 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
+    })
     @GetMapping("/{userId}/{date}")
     public ResponseEntity<Response<DiaryResponseDto>> getDiaryByDate(@PathVariable Long userId,
                                                                      @PathVariable LocalDate date) {
         return ResponseEntity.ok(Response.ok(diaryService.getDiaryByDate(userId, date)));
     }
 
-    // 레코드 모아보기 - 내가 좋아요 누른 일기 리스트 조회
+    @Operation(summary = "인증된 사용자가 자신이 좋아요 누른 일기 리스트 조회", description = "레코드 모아보기 - 인증된 사용자가 자신이 좋아요 누른 일기 리스트를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
+    })
     @GetMapping("/user/like")
     public ResponseEntity<Response<DiaryListResDto>> getUserLikeDiary(HttpServletRequest request) {
         DiaryListResDto diaryListResDto = diaryService.findDiaryUserLikes(request);

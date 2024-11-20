@@ -18,3 +18,21 @@ spring:
       hibernate:
         format_sql: false
         use_sql_comments: true
+
+openai:
+  model: gpt-3.5-turbo
+  api-key: {openai.api-key}
+  api:
+    url: https://api.openai.com/v1/chat/completions
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: ${S3_BUCKET}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

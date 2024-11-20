@@ -19,10 +19,11 @@ public class DiaryRequestDto {
 
     private boolean isVisible;
 
-    private String diaryImage;
+    public Boolean getIsVisible() {
+        return isVisible;
+    }
 
-    /**
-     * 시큐리티 merge시 없애줄 필드.
-     */
-    private String userEmail;
+    public void setIsVisible(Boolean isVisible) {
+        this.isVisible = isVisible;
+    }
 }

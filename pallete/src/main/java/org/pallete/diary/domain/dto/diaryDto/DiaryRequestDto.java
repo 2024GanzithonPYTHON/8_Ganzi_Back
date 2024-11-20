@@ -1,4 +1,4 @@
-package org.pallete.domain.dto.diaryDto;
+package org.pallete.diary.domain.dto.diaryDto;
 
 
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +16,8 @@ public class DiaryRequestDto {
 
     @NotNull
     private String content;
+
+    private String diaryImage;
 
     /**
      * 시큐리티 merge시 없애줄 필드.

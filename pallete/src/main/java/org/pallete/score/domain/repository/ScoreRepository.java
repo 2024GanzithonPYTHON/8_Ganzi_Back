@@ -22,6 +22,4 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
     Optional<Score> findByUserEmailAndDiaryId(String email, Long diaryId);
     Score findByDiary(Diary diary);
 
-    Optional<Score> findTopByUserEmailAndCreatedAt(String userEmail, LocalDate createdAt);
-
 }

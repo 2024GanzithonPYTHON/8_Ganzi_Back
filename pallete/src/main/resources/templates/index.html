@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지 임시 구현</title>
+</head>
+<body>
+<h1>메인 페이지 (임시)</h1>
+<div th:if="${session.userName}">
+    <p th:text="'환영합니다, ' + ${session.userName} + '님!'"></p>
+    <a href="/logout">로그아웃</a>
+</div>
+<a href="/login">로그인</a>
+<a href="/register">회원가입</a>
+<a href="/findInfo">비밀번호 찾기</a>
+</body>
+</html>

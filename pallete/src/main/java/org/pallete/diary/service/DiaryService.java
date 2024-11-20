@@ -53,7 +53,7 @@ public class DiaryService {
     @Transactional
     public DiaryResponseDto createDiary(DiaryRequestDto diaryRequestDto, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new BusinessException(ResponseCode.DIA_AUTENTICATION_FAIL))
+                .orElseThrow(() -> new BusinessException(ResponseCode.DIA_AUTENTICATION_FAIL));
 
         Diary diary = diaryRepository.save(new Diary(diaryRequestDto, user));
         return new DiaryResponseDto(diary);

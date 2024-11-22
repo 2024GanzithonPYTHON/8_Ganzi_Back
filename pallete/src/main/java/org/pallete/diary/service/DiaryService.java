@@ -138,14 +138,13 @@ public class DiaryService {
 
     // 돌아보기 - 최고의 날 하이라이트 (점수 가장 높은 일기 top1 조회
     public DiaryResponseDto getTopDiary(HttpServletRequest request) {
-        // 세션에서 이메일 추출
+        Pageable pageable = PageRequest.of(0, 1);
         String userEmail = getEmailFromSession(request);
 
-        // 이메일을 기준으로 점수가 가장 높은 일기 조회
-        Diary topDiary = diaryRepository.findTopDiaryByUserEmailOrderByScoreDesc(userEmail)
-                .orElseThrow(() -> new BusinessException(ResponseCode.DIA_DIA_NOT_FOUND));
+        List<Diary> topDiaries = diaryRepository.findTopDiaryByUserEmailOrderByScoreDesc(userEmail, pageable);
 
-        // 점수 정보 조회
+        Diary topDiary = topDiaries.get(0);
+
         ScoreInfoResDto scoreInfoResDto = scoreRepository.findByDiaryId(topDiary.getId())
                 .map(score -> new ScoreInfoResDto(score.getId(), score.getScore(), score.getReview(), score.getCreateDate()))
                 .orElse(null);

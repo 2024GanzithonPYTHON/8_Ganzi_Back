@@ -110,4 +110,16 @@ public class DiaryController {
         return ResponseEntity.ok(Response.ok(diaryListResDto));
     }
 
+    @Operation(summary = "사용자가 작성한 점수가 가장 높은 최신 일기 조회", description = "사용자가 작성한 점수가 가장 높은 일기를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
+            @ApiResponse(responseCode = "401", description = "인증이 필요합니다."),
+            @ApiResponse(responseCode = "404", description = "해당 사용자의 일기가 없습니다.")
+    })
+    @GetMapping("/top")
+    public ResponseEntity<Response<DiaryResponseDto>> getTopDiary(HttpServletRequest request) {
+        DiaryResponseDto topDiary = diaryService.getTopDiary(request);
+        return ResponseEntity.ok(Response.ok(topDiary));
+    }
+
 }

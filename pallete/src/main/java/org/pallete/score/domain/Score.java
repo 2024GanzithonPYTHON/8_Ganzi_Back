@@ -23,7 +23,7 @@ public class Score extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "diary_id")
     private Diary diary;
 
@@ -35,7 +35,4 @@ public class Score extends BaseTimeEntity {
         this.diary = diary;
     }
 
-
-    // 한 명의 사용자는 여러 개의 점수를 매길 수 있다.
-    // 한 일기에는 한 점수만 매길 수 있다.
 }

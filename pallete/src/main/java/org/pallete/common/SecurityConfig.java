@@ -17,7 +17,6 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    // TokenProvider를 사용하여 JWT 토큰 관리
 
 
     @Bean // 보안 필터 체인을 정의하는 Bean
@@ -29,8 +28,6 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/login/oauth2/**").permitAll()
-                        .requestMatchers("/test").authenticated()
                         .anyRequest().permitAll()
                 )
                 .build();

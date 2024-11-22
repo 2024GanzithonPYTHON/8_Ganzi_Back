@@ -1,11 +1,16 @@
 package org.pallete.common;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@OpenAPIDefinition(servers = {
+                @Server(url = "https://lion.gyoseung.me", description = "Generated server url"),
+                @Server(url = "http://localhost:8080", description = "local server url")})
 @Configuration // bean 관리
 public class SwaggerConfig {
     @Bean

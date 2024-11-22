@@ -16,6 +16,7 @@ public class DiaryResponseDto {
     private Long id;
     private String content;
     private LocalDate createdAt;
+    private boolean isVisible;
     private String diaryImage;
 
     public DiaryResponseDto(Diary diary) {
@@ -23,6 +24,7 @@ public class DiaryResponseDto {
         this.title = diary.getTitle();
         this.content = diary.getContent();
         this.createdAt = diary.getCreatedAt();
+        this.isVisible = diary.getIsVisible();
         this.diaryImage = diary.getDiaryImage();
     }
 
@@ -45,8 +47,8 @@ public class DiaryResponseDto {
 
     public static DiaryResponseDto from(Diary diary) {
         return new DiaryResponseDto(
-                diary.getTitle(),
                 diary.getId(),
+                diary.getTitle(),
                 diary.getContent(),
                 diary.getCreatedAt(),
                 diary.getDiaryImage()

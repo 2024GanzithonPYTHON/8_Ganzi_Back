@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.pallete.diary.domain.Diary;
+import org.pallete.score.api.dto.response.ScoreInfoResDto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -16,15 +18,16 @@ public class DiaryResponseDto {
     private Long id;
     private String content;
     private LocalDate createdAt;
-    private boolean isVisible;
+    private boolean isVisible = true;
     private String diaryImage;
+    private ScoreInfoResDto score;
 
     public DiaryResponseDto(Diary diary) {
         this.id = diary.getId();
         this.title = diary.getTitle();
         this.content = diary.getContent();
         this.createdAt = diary.getCreatedAt();
-        this.isVisible = diary.getIsVisible();
+        this.isVisible = diary.isVisible();
         this.diaryImage = diary.getDiaryImage();
     }
 
@@ -53,6 +56,17 @@ public class DiaryResponseDto {
                 diary.getCreatedAt(),
                 diary.getDiaryImage()
         );
+    }
+
+    // 점수 포함 DTO
+    public DiaryResponseDto(Diary diary, ScoreInfoResDto score) {
+        this.id = diary.getId();
+        this.title = diary.getTitle();
+        this.content = diary.getContent();
+        this.createdAt = diary.getCreatedAt();
+        this.isVisible = diary.isVisible();
+        this.diaryImage = diary.getDiaryImage();
+        this.score = score;
     }
 
 }

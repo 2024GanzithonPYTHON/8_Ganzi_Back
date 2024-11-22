@@ -12,6 +12,8 @@ import org.pallete.diary.domain.dto.diaryDto.DiaryResponseDto;
 import org.pallete.diary.repository.DiaryRepository;
 import org.pallete.login.model.User;
 import org.pallete.login.repository.UserRepository;
+import org.pallete.score.api.dto.response.ScoreInfoResDto;
+import org.pallete.score.domain.repository.ScoreRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,13 +29,15 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
     private final S3Service s3Service;
+    private final ScoreRepository scoreRepository;
 
-
+    // 모든 사용자가 전체 일기 5개씩 조회
     public Page<DiaryResponseDto> getList(Pageable pageable) {
         int page = pageable.getPageNumber() - 1;
         int pageLimit = 10;
@@ -52,15 +56,23 @@ public class DiaryService {
         return diaryResponseDto;
     }
 
+    // 인증된 사용자가 각자의 일기를 전체 조회 + 점수 테이블 추가해야 함
     public DiaryListResDto getDiaryByUserEmail(HttpServletRequest request) {
         String userEmail = getEmailFromSession(request);
         List<DiaryResponseDto> diaryResponseDtoList = diaryRepository.findByUserEmail(userEmail)
-                .stream().map(DiaryResponseDto::from)
+                .stream().map(diary -> {
+                    // 점수 가져오기 (Optional로 처리)
+                    ScoreInfoResDto scoreInfoResDto = scoreRepository.findByDiaryId(diary.getId())
+                            .map(score -> new ScoreInfoResDto(score.getId(), score.getScore(), score.getReview(), score.getCreateDate()))
+                            .orElse(null); // 점수가 없으면 null 반환
+                    return new DiaryResponseDto(diary, scoreInfoResDto);
+                })
                 .toList();
 
         return DiaryListResDto.from(diaryResponseDtoList);
     }
 
+    // 일기 생성
     @Transactional
     public DiaryResponseDto createDiary(DiaryRequestDto diaryRequestDto, MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         String userEmail = getEmailFromSession(request);
@@ -73,21 +85,23 @@ public class DiaryService {
             diaryImage = s3Service.upload(multipartFile, "diary");
         }
 
-        Boolean isVisible = diaryRequestDto.getIsVisible() != null ? diaryRequestDto.getIsVisible() : true;
+        boolean isVisible = diaryRequestDto.getIsVisible() != null ? diaryRequestDto.getIsVisible() : true;
 
         Diary diary = new Diary(diaryRequestDto, user, diaryImage);
-        diary.setIsVisible(isVisible);
+        diary.setVisible(isVisible);
         diary = diaryRepository.save(diary);
 
         return new DiaryResponseDto(diary);
     }
 
+    // 커뮤니티 - 팝업 모든 사용자가 일기 id에 따라 해당 일기 한 개 조회
     public DiaryResponseDto getDiary(Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new BusinessException(ResponseCode.DIA_DIA_NOT_FOUND));
         return new DiaryResponseDto(diary);
     }
 
+    // 메인 페이지 상단 레코드 - 모든 사용자가 랜덤하게 오늘의 5개 일기 조회
     public List<DiaryResponseDto> getRandomDiaries(){
         LocalDate today = LocalDate.now();
         return diaryRepository.findRandomDiariesTodayAndIsVisibleTrue(today, PageRequest.of(0, 5))
@@ -96,16 +110,18 @@ public class DiaryService {
                 .collect(Collectors.toList());
     }
 
-    // 사용자의 날짜별 일기 조회
+    // 사용자의 날짜별 일기 조회 + 점수 테이블
     public DiaryResponseDto getDiaryByDate(Long userId, LocalDate date) {
         Diary diary = diaryRepository.findByUserIdAndCreatedAt(userId, date)
                 .orElseThrow(() -> new BusinessException(ResponseCode.DIA_DIA_NOT_FOUND));
 
-        return new DiaryResponseDto(diary, date);
+        ScoreInfoResDto scoreInfoResDto = scoreRepository.findByDiaryId(diary.getId())
+                .map(score -> new ScoreInfoResDto(score.getId(), score.getScore(), score.getReview(), score.getCreateDate()))
+                .orElse(null);
+        return new DiaryResponseDto(diary, scoreInfoResDto);
     }
 
     // 사용자가 좋아요 누른 일기 리스트 조회
-    @Transactional
     public DiaryListResDto findDiaryUserLikes(HttpServletRequest request) {
         String userEmail = getEmailFromSession(request);
         User user = userRepository.findByEmail(userEmail);
@@ -118,6 +134,23 @@ public class DiaryService {
                 .collect(Collectors.toList());
 
         return DiaryListResDto.from(diaryResponseDtoList);
+    }
+
+    // 돌아보기 - 최고의 날 하이라이트 (점수 가장 높은 일기 top1 조회
+    public DiaryResponseDto getTopDiary(HttpServletRequest request) {
+        // 세션에서 이메일 추출
+        String userEmail = getEmailFromSession(request);
+
+        // 이메일을 기준으로 점수가 가장 높은 일기 조회
+        Diary topDiary = diaryRepository.findTopDiaryByUserEmailOrderByScoreDesc(userEmail)
+                .orElseThrow(() -> new BusinessException(ResponseCode.DIA_DIA_NOT_FOUND));
+
+        // 점수 정보 조회
+        ScoreInfoResDto scoreInfoResDto = scoreRepository.findByDiaryId(topDiary.getId())
+                .map(score -> new ScoreInfoResDto(score.getId(), score.getScore(), score.getReview(), score.getCreateDate()))
+                .orElse(null);
+
+        return new DiaryResponseDto(topDiary, scoreInfoResDto);
     }
 
     // 세션에서 이메일 가져오기

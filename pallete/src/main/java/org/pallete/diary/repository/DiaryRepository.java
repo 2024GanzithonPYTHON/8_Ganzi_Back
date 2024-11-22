@@ -26,4 +26,9 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Optional<Diary> findByUserIdAndCreatedAt(Long userId, LocalDate localDate);
 
     @Query("SELECT d FROM Diary d JOIN d.likes l WHERE l.user.email = :email")
-    List<Diary> findDiariesLikedByUserEmail(String email);}
+    List<Diary> findDiariesLikedByUserEmail(String email);
+
+    // 사용자의 일기 중 점수가 가장 높은 일기 최신 1개 조회
+    @Query("SELECT d FROM Diary d JOIN d.score s WHERE d.user.email = :email ORDER BY s.score DESC, d.createdAt DESC")
+    Optional<Diary> findTopDiaryByUserEmailOrderByScoreDesc(String email);
+}

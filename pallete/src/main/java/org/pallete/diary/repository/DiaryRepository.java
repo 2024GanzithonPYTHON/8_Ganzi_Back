@@ -30,5 +30,5 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     // 사용자의 일기 중 점수가 가장 높은 일기 최신 1개 조회
     @Query("SELECT d FROM Diary d JOIN d.score s WHERE d.user.email = :email ORDER BY s.score DESC, d.createdAt DESC")
-    Optional<Diary> findTopDiaryByUserEmailOrderByScoreDesc(String email);
+    List<Diary> findTopDiaryByUserEmailOrderByScoreDesc(String email, Pageable pageable);
 }

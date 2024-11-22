@@ -3,6 +3,7 @@ package org.pallete.login.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.pallete.login.model.User;
 import org.pallete.login.model.UserSignUpReqDto;
 import org.pallete.login.service.UserService;
@@ -25,10 +26,15 @@ public class UserRestController {
             @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
     })
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserSignUpReqDto userSignUpReqDto) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserSignUpReqDto userSignUpReqDto) {
         if (userService.findByEmail(userSignUpReqDto.email()) != null) {
             return ResponseEntity.badRequest().body("Email already exists");
         }
+
+        if (!userSignUpReqDto.passwordsMatch()) {
+            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
+        }
+
         User user = new User();
         user.setEmail(userSignUpReqDto.email());
         user.setName(userSignUpReqDto.name());

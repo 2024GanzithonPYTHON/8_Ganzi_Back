@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.pallete.diary.domain.dto.Response;
 import org.pallete.score.api.dto.request.ScoreSaveReqDto;
@@ -30,7 +31,7 @@ public class ScoreController {
             @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
     })
     @PostMapping("/{diaryId}")
-    public ResponseEntity<Response<ScoreInfoResDto>> scoreSave(@PathVariable("diaryId") Long diaryId, @RequestBody ScoreSaveReqDto scoreSaveReqDto, HttpServletRequest request) {
+    public ResponseEntity<Response<ScoreInfoResDto>> scoreSave(@PathVariable("diaryId") Long diaryId, @Valid @RequestBody ScoreSaveReqDto scoreSaveReqDto, HttpServletRequest request) {
         ScoreInfoResDto scoreInfoResDto = scoreService.scoreSave(diaryId, scoreSaveReqDto,request);
         return ResponseEntity.ok(Response.ok(scoreInfoResDto));
     }

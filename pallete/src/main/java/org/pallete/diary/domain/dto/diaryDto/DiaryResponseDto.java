@@ -34,6 +34,7 @@ public class DiaryResponseDto {
     public DiaryResponseDto(Long id, String title,
                             String content,
                             LocalDate createdAt, String diaryImage) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;

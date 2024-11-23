@@ -46,6 +46,7 @@ public class DiaryResponseDto {
         this.id = diary.getId();
         this.title = diary.getTitle();
         this.content = diary.getContent();
+        this.diaryImage = diary.getDiaryImage();
         this.createdAt = date;
     }
 

@@ -23,8 +23,6 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     @Query("SELECT d FROM Diary d WHERE d.createdAt = :today AND d.isVisible = true ORDER BY function('RAND') ")
     List<Diary> findRandomDiariesTodayAndIsVisibleTrue(@Param("today") LocalDate today, Pageable pageable);
 
-    Optional<Diary> findByUserIdAndCreatedAt(Long userId, LocalDate localDate);
-
     @Query("SELECT d FROM Diary d JOIN d.likes l WHERE l.user.email = :email")
     List<Diary> findDiariesLikedByUserEmail(String email);
 

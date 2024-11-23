@@ -111,9 +111,11 @@ public class DiaryService {
     }
 
     // 사용자의 날짜별 일기 조회 + 점수 테이블
-    public DiaryResponseDto getDiaryByDate(Long userId, LocalDate date) {
-        Diary diary = diaryRepository.findByUserIdAndCreatedAt(userId, date)
-                .orElseThrow(() -> new BusinessException(ResponseCode.DIA_DIA_NOT_FOUND));
+    public DiaryResponseDto getDiaryByDate(HttpServletRequest request, LocalDate date) {
+        String userEmail = getEmailFromSession(request);
+
+        List<Diary> diaries = diaryRepository.findByUserEmailAndCreatedAt(userEmail, date);
+        Diary diary = diaries.get(0);
 
         ScoreInfoResDto scoreInfoResDto = scoreRepository.findByDiaryId(diary.getId())
                 .map(score -> new ScoreInfoResDto(score.getId(), score.getScore(), score.getReview(), score.getCreateDate()))

@@ -93,10 +93,10 @@ public class DiaryController {
             @ApiResponse(responseCode = "200", description = "응답 생성에 성공하였습니다."),
             @ApiResponse(responseCode = "401", description = "인증이 필요합니다.")
     })
-    @GetMapping("/{userId}/{date}")
-    public ResponseEntity<Response<DiaryResponseDto>> getDiaryByDate(@PathVariable Long userId,
-                                                                     @PathVariable LocalDate date) {
-        return ResponseEntity.ok(Response.ok(diaryService.getDiaryByDate(userId, date)));
+    @GetMapping("/date")
+    public ResponseEntity<Response<DiaryResponseDto>> getDiaryByDate(HttpServletRequest request,
+                                                                     @RequestParam LocalDate date) {
+        return ResponseEntity.ok(Response.ok(diaryService.getDiaryByDate(request, date)));
     }
 
     @Operation(summary = "인증된 사용자가 자신이 좋아요 누른 일기 리스트 조회", description = "레코드 모아보기 - 인증된 사용자가 자신이 좋아요 누른 일기 리스트를 조회합니다.")

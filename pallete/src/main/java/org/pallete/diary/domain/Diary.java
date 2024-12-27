@@ -49,12 +49,12 @@ public class Diary {
 
     private String diaryImage;
 
-    public Diary(DiaryRequestDto diaryRequestDto, User user, String diaryImage) {
+    public Diary(DiaryRequestDto diaryRequestDto, User user, String diaryImage, LocalDate createdAt) {
         this.user = user;
         this.title = diaryRequestDto.getTitle();
         this.content = diaryRequestDto.getContent();
         this.diaryImage = diaryImage;
-        this.createdAt = LocalDate.now();
+        this.createdAt = createdAt;
     }
 
     // 인증된 사용자 - 좋아요 개수 증가, 감소

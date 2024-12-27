@@ -87,7 +87,9 @@ public class DiaryService {
 
         boolean isVisible = diaryRequestDto.getIsVisible() != null ? diaryRequestDto.getIsVisible() : true;
 
-        Diary diary = new Diary(diaryRequestDto, user, diaryImage);
+        LocalDate selectedDate = LocalDate.of(diaryRequestDto.getYear(), diaryRequestDto.getMonth(), diaryRequestDto.getDayOfMonth());
+
+        Diary diary = new Diary(diaryRequestDto, user, diaryImage, selectedDate);
         diary.setVisible(isVisible);
         diary = diaryRepository.save(diary);
 

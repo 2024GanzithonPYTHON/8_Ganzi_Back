@@ -21,6 +21,10 @@ public class DiaryRequestDto {
 
     private boolean isVisible;
 
+    private int year;
+    private int month;
+    private int dayOfMonth;
+
     public Boolean getIsVisible() {
         return isVisible;
     }
